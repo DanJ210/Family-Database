@@ -4,4 +4,6 @@ they can go to a site and register their info as a member of the family which wi
 grant them access to some special content. Something maybe like a family social network.
 
 I want to do this for fun, practice, and because I'm stuck up in NC all alone right now
-and I'm incredibly bored with some intense cabin fever!
+and I'm incredibly bored with some intense cabin fever! 
+
+*** I don't understand why the readme file isn't pushing and showing up in github.
