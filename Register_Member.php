@@ -20,6 +20,6 @@
     $conn->exec($sql);
 
     // Adding a member
-    $sqladd = "INSERT INTO members"
+    $sqladd = "INSERT INTO members (firstName, lastName) VALUES (:Test,:now)";
     ?>
 </html>
