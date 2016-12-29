@@ -2,9 +2,10 @@
 <html>
     <?php
     // Page holding database connection configurations 
-    require_once('C:/Wamp_64/www/Focarino_Database/config.php');
+    //require_once('C:/Wamp_64/www/Focarino_Database/config.php');
     
     // Creating PDO connection
+    /*
     $dsn = "sqlite:/Users/DanJ2/Documents/focarino.sqlite3";
     try {
         $conn = new PDO($dsn);
@@ -12,20 +13,10 @@
     } catch (PDOException $e) {
         echo "Connection failed:".$e->getMessage();
     }
-
+    */
     // Checking if database file exists and if it doesn't then
     // it creates the database, useful for when I delete.
-    $databaseFile = 'C:/Wamp_64/www/Focarino_Database/focarino.sqlite3';
-    if (file_exists($databaseFile) ) {
-        echo "It exists";
-    }
-    else {
-        echo "It doesn't exist";
-        $sql = "DROP TABLE IF EXISTS foc_member";
-        $conn->exec($sql);
-        $sql = "CREATE TABLE foc_member (id INTEGER PRIMARY KEY, firstName, lastName)";
-        $conn->exec($sql);
-    }
+    
     //$sql = "select * FROM Foc_member";
     // Creating table but only needed once. 
     /*
@@ -37,7 +28,13 @@
     $st = $conn->prepare($sqladd);
     $st->bindValue(":firstNameText", $_POST['firstName']);
     $st->bindValue(":lastNameText", $_POST['lastName']);
-    //$st->execute();
+    $st->execute();
+    
+    $sqladd = ("INSERT INTO foc_member (firstName, lastName) VALUES (:nextNameText,:nextLastNameText)");
+    $st = $conn->prepare($sqladd);
+    $st->bindValue("nextNameText", "Test");
+    $st->bindValue("nextLastNameText", "Last Name");
+
     if ($st->execute()) {
         echo "Registration Successful";
         
