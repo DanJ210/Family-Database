@@ -10,11 +10,11 @@ $members = $st->fetch();
 echo "ID: ".$members["id"]."<br/>";
 echo "First Name:  ".$members["firstName"]."<br/>";
 echo "Last Name:  ".$members["lastName"]."<br/>";
-
+echo count($members);
 foreach ($members as $member) {
-    echo $members["id"];
-    echo $members["firstName"];
-    echo $members["lastName"];
+    echo $members["id"]."<br/>";
+    echo $members["firstName"]."<br/>";
+    echo $members["lastName"]."<br/>";
     //echo $members["lastName"];
     
     //echo $conn->query("SELECT firstName from foc_member");
