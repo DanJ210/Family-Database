@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
     <?php
+    // Page holding database connection configurations 
+    require_once('C:/Wamp_64/www/Focarino_Database/config.php');
+    /*
     // Creating PDO connection
     $dsn = "sqlite:/Users/DanJ2/Documents/focarino.sqlite3";
     try {
@@ -8,8 +11,9 @@
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     } catch (PDOException $e) {
-        echo "Connection failes:".$e->getMessage();
+        echo "Connection failed:".$e->getMessage();
     }
+    */
     // Creating table but only needed once. 
     /*
     $sql = "DROP TABLE IF EXISTS foc_member";
