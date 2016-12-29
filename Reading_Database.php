@@ -4,7 +4,7 @@
 //require_once('C:/Wamp_64/www/Focarino_Database/Register_Form.php');
 require_once('C:/Wamp_64/www/Focarino_Database/config.php');
 
-$sql = "SELECT * from foc_member";
+$sql = "SELECT id from foc_member";
 $st = $conn->query($sql);
 $members = $st->fetch();
 echo "ID: ".$members["id"]."<br/>";

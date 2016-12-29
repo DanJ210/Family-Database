@@ -1,0 +1,12 @@
+/* Top header for intro */
+
+.header {
+    width: 100%;
+    background-color: black;
+    color: white;
+    font-size: 50px;
+}
+
+#registrationForm fieldset{
+    background-color: deepskyblue;
+}

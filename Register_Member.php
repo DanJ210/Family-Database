@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
+    
     <?php
     // Page holding database connection configurations 
-    //require_once('C:/Wamp_64/www/Focarino_Database/config.php');
+    require_once('C:/Wamp_64/www/Focarino_Database/config.php');
     
     // Creating PDO connection
     /*
@@ -24,17 +25,31 @@
     */
     
     // Adding a member
+    
+    $sqladd = "INSERT INTO foc_member (firstName, lastName) VALUES (:firstNameText,:lastNameText)";
+    $st = $conn->prepare($sqladd);
+    $st->bindValue(":firstNameText", $_POST['firstName']);
+    $st->bindValue(":lastNameText", $_POST['lastName']);
+    $st->execute();
+
     $sqladd = "INSERT INTO foc_member (firstName, lastName) VALUES (:firstNameText,:lastNameText)";
     $st = $conn->prepare($sqladd);
     $st->bindValue(":firstNameText", $_POST['firstName']);
     $st->bindValue(":lastNameText", $_POST['lastName']);
     $st->execute();
     
+    $sqladd = "INSERT INTO foc_member (firstName, lastName) VALUES (:firstNameText,:lastNameText)";
+    $st = $conn->prepare($sqladd);
+    $st->bindValue(":firstNameText", $_POST['firstName']);
+    $st->bindValue(":lastNameText", $_POST['lastName']);
+    $st->execute();
+    
+    
     $sqladd = ("INSERT INTO foc_member (firstName, lastName) VALUES (:nextNameText,:nextLastNameText)");
     $st = $conn->prepare($sqladd);
     $st->bindValue("nextNameText", "Test");
     $st->bindValue("nextLastNameText", "Last Name");
-
+    
     if ($st->execute()) {
         echo "Registration Successful";
         
