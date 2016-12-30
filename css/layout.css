@@ -5,8 +5,23 @@
     background-color: black;
     color: white;
     font-size: 50px;
+    text-align: center;
 }
 
+#registrationForm {
+    width: 50%;
+    margin: auto;
+}
 #registrationForm fieldset{
     background-color: deepskyblue;
+}
+
+/* Form styling */
+#registrationForm {
+    display: block;
+}
+#registrationForm div {
+}
+.textbox {
+    width:50%;
 }
