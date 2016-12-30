@@ -4,7 +4,7 @@
     <?php
     // Page holding database connection configurations 
     require_once('C:/Wamp_64/www/Focarino_Database/config.php');
-    
+    require_once('DataObject.class.php');
     // Creating PDO connection
     /*
     $dsn = "sqlite:/Users/DanJ2/Documents/focarino.sqlite3";

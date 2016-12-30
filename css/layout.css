@@ -8,20 +8,21 @@
     text-align: center;
 }
 
+/* Setting fieldset and form styling and layout */
 #registrationForm {
     width: 50%;
     margin: auto;
+    color: white;
+}
+#registrationForm legend {
+    background-color: cornflowerblue;
 }
 #registrationForm fieldset{
     background-color: deepskyblue;
 }
 
 /* Form styling */
-#registrationForm {
-    display: block;
-}
-#registrationForm div {
-}
+
 .textbox {
     width:50%;
 }
