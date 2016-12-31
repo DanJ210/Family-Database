@@ -7,7 +7,7 @@
 
     require_once('SQLite3.class.php');
 
-    $FcDB = new FocarinoDB('focarino_database.sqlite3');
+    $FcDB = new FocarinoDB('focarino_member.sqlite3');
 
     if (!$FcDB) {
         echo $FcDB->lastErrorMsg();
@@ -22,12 +22,15 @@
     $fName = $_POST['firstName'];
     $lName = $_POST['lastName'];
     $bday = $_POST['birthDate'];
+    $city = $_POST['city'];
+    $state = $_POST['state'];
+    $joindate = date("F/j/Y");
 
     $sqlInsertMember =<<<EOF
         INSERT INTO family_members
-        (firstname, lastname, birthdate, city, state, joindate)
+        (id, firstname, lastname, birthdate, city, state, joindate)
         VALUES
-        ("$fName", '$lName', $bday, "Hendersonville", "FL", 2016/12/31);
+        (NULL, '$fName', '$lName', '$bday', '$city', '$state', '$joindate');
 
 EOF;
 
@@ -123,6 +126,6 @@ $FcDB->close();
     ?>
     <body>
         </br>
-        <h3><a href="members_area.html">Click link to go to members area</a></h3>
+        <h3><a href="Reading_Database.php">Click link to go to members area</a></h3>
     </body>
 </html>

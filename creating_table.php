@@ -2,12 +2,12 @@
 
 require_once('SQLite3.class.php');
 
-$db = new FocarinoDB('focarino_database.sqlite3');
+$db = new FocarinoDB('focarino_member.sqlite3');
 
 
 $sql =<<<EOF
     CREATE TABLE family_members
-    (id int primary key,
+    (id integer primary key,
     firstname varchar(25),
     lastname varchar(25),
     birthdate date,

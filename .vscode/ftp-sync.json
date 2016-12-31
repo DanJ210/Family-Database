@@ -1,0 +1,19 @@
+{
+    "remotePath": "./focarino.guestbook",
+    "host": "ftp.campbarter.com",
+    "username": "daniel@campbarter.com",
+    "password": "2acq628210",
+    "port": 21,
+    "secure": false,
+    "protocol": "ftp",
+    "uploadOnSave": false,
+    "passive": true,
+    "debug": false,
+    "privateKeyPath": null,
+    "passphrase": null,
+    "ignore": [
+        "\\.vscode",
+        "\\.git",
+        "\\.DS_Store"
+    ]
+}
