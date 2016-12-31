@@ -5,9 +5,7 @@ class FocarinoDB extends SQLite3 {
         $this->open('focarino_member.sqlite3');
     }
 
-    function close() {
-        $this->close();
-    }
+    
 }
 
 

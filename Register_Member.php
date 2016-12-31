@@ -3,6 +3,8 @@
     
     <?php
     
+
+
     require_once('SQLite3.class.php');
 
     $FcDB = new FocarinoDB('focarino_database.sqlite3');
@@ -16,8 +18,28 @@
     }
     */
 
+    // Capturing info from submitted form
+    $fName = $_POST['firstName'];
+    $lName = $_POST['lastName'];
+    $bday = $_POST['birthDate'];
 
+    $sqlInsertMember =<<<EOF
+        INSERT INTO family_members
+        (firstname, lastname, birthdate, city, state, joindate)
+        VALUES
+        ("$fName", '$lName', $bday, "Hendersonville", "FL", 2016/12/31);
 
+EOF;
+
+$results = $FcDB->exec($sqlInsertMember);
+
+if (!$results) {
+    echo $FcDB->lastErrorMsg();
+}
+else {
+    echo "Added successfully";
+}
+$FcDB->close();
 
     // Page holding database connection configurations 
     // All old code below here which is mainly for more intense SQL 
