@@ -55,6 +55,7 @@ while ($row = $results->fetchArray(SQLITE3_ASSOC) ) {
     <?php 
     }
     while ($row = $results->fetchArray(SQLITE3_ASSOC) ) {
+        echo "</br>";
         echo "ID = " . $row['id'] . "</br>";
         echo "First Name = " . $row['firstname'] . "</br>";
         echo "Last Name = " . $row['lastname'] . "</br>";
