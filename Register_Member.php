@@ -2,7 +2,27 @@
 <html>
     
     <?php
+    
+    require_once('SQLite3.class.php');
+
+    $FcDB = new FocarinoDB('focarino_database.sqlite3');
+
+    if (!$FcDB) {
+        echo $FcDB->lastErrorMsg();
+    }
+    /*
+    else {
+        echo "Opened Successfully";
+    }
+    */
+
+
+
+
     // Page holding database connection configurations 
+    // All old code below here which is mainly for more intense SQL 
+    // connections, not SQLite3. Saving it for future reference.
+    /*
     require_once('C:/Wamp_64/www/Focarino_Database/config.php');
     require_once('DataObject.class.php');
 
@@ -24,6 +44,7 @@
     $st->bindValue( ":lname", $lName );
     $st->bindValue( ":bday", $bday );
     $st->execute();
+    */
     // Creating PDO connection
     /*
     $dsn = "sqlite:/Users/DanJ2/Documents/focarino.sqlite3";
