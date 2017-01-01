@@ -17,8 +17,7 @@ $sql =<<<EOF
     );
 
 EOF;
-$sql2 =<<<EOF
-EOF;
+
 $result = $db->exec($sql);
 
 if (!$result) {
