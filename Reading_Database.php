@@ -32,15 +32,6 @@ EOF;
         
 <?php
 $results = $FcDB->query($sqlDisplay);
-//
-//This statement was breaking the display not the while below
-//$results -> fetchArray(SQLITE3_ASSOC);
-
-// Removing this while statement breaks display
-while ($row = $results->fetchArray(SQLITE3_ASSOC) ) {
-    //echo "Testing";
-}
-
 ?>
     <?php 
     $count = 1;
