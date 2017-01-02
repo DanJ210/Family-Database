@@ -32,37 +32,28 @@ EOF;
         
 <?php
 $results = $FcDB->query($sqlDisplay);
-$results -> fetchArray(SQLITE3_ASSOC);
+//
+//This statement was breaking the display not the while below
+//$results -> fetchArray(SQLITE3_ASSOC);
 
 // Removing this while statement breaks display
 while ($row = $results->fetchArray(SQLITE3_ASSOC) ) {
-    echo "Testing";
+    //echo "Testing";
 }
-/*
-while ($row = $results->fetchArray(SQLITE3_ASSOC) ) {
-    ?>
-        <dd><?php echo $row['firstname'] ?></dd>    
-    
-    <?php 
-} */
-
 
 ?>
     <?php 
-    /*
-    while ($row = $results->fetchArray(SQLITE3_ASSOC) ) {
-    ?>
-        <dd><?php echo $row['lastname'] ?></dd>    
-    <?php 
-    } */
     $count = 1;
     while ($row = $results->fetchArray(SQLITE3_ASSOC) ) {
+        echo $row['id'];
         ?>
+        
         <dl>
             <dt>Record <?php echo $count;?></dt>
                 <dd>
                 <?php 
-                echo count($row);
+                // Counts 7 for each array associate key stored stored
+                //echo count($row);
                 echo "</br>";
                 echo "ID = " . $row['id'] . "</br>";
                 echo "First Name = " . $row['firstname'] . "</br>";
