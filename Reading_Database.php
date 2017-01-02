@@ -3,20 +3,21 @@
     <style>
     dl {
         display: block;
+        float: left;
     }
     dt {
         background-color: cornflowerblue;
+        /*border: 1px solid black;*/
         color: white;
         text-align: center;
+        width: 300px;
     }
     dd {
-        /*float: left;*/
+        border: 1px solid black;
+        width: 200px;
     }
     </style>
 <?php 
-
-//require_once('C:/Wamp_64/www/Focarino_Database/Register_Member.php');
-//require_once('C:/Wamp_64/www/Focarino_Database/Register_Form.php');
 require_once('SQLite3.class.php');
 
 $FcDB = new FocarinoDB('focarino_member.sqlite3');
@@ -24,7 +25,6 @@ $FcDB = new FocarinoDB('focarino_member.sqlite3');
 if (!$FcDB) {
     echo $FcDB->lastErrorMsg();
 }
-
 $sqlDisplay =<<<EOF
     SELECT * FROM family_members;
 EOF;
@@ -36,9 +36,7 @@ $results = $FcDB->query($sqlDisplay);
     <?php 
     $count = 1;
     while ($row = $results->fetchArray(SQLITE3_ASSOC) ) {
-        echo $row['id'];
         ?>
-        
         <dl>
             <dt>Record <?php echo $count;?></dt>
                 <dd>
