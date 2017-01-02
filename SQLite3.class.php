@@ -7,7 +7,4 @@ class FocarinoDB extends SQLite3 {
 
     
 }
-
-
-
 ?>
