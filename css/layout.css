@@ -8,16 +8,25 @@
     text-align: center;
 }
 
+/* Horizontal navigation bar */
+.horizontalnav {
+    display: inline;
+    background-color: cornflowerblue;
+    color: white;
+    position: absolute;
+    top: 0px;
+}
+
 /* Setting fieldset and form styling and layout */
-#registrationForm {
+.registrationForm {
     width: 50%;
     margin: auto;
     color: white;
 }
-#registrationForm legend {
+.registrationForm legend {
     background-color: cornflowerblue;
 }
-#registrationForm fieldset{
+.registrationForm fieldset{
     background-color: deepskyblue;
 }
 
