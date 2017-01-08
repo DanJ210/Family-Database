@@ -55,8 +55,7 @@ EOF;
     </br>  
 <?php
 $results = $FcDB->query($sqlDisplay);
-?>
-    <?php 
+
     $count = 1;
     while ($row = $results->fetchArray(SQLITE3_ASSOC) ) {
         ?>

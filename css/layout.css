@@ -18,15 +18,15 @@
 }
 
 /* Setting fieldset and form styling and layout */
-.registrationForm {
+.form {
     width: 50%;
     margin: auto;
     color: white;
 }
-.registrationForm legend {
+.form legend {
     background-color: cornflowerblue;
 }
-.registrationForm fieldset{
+.form fieldset{
     background-color: deepskyblue;
 }
 
