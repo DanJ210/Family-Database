@@ -2,7 +2,7 @@
     "remotePath": "./focarino.guestbook",
     "host": "ftp.campbarter.com",
     "username": "daniel@campbarter.com",
-    "password": "2acq628210",
+    "password": "",
     "port": 21,
     "secure": false,
     "protocol": "ftp",

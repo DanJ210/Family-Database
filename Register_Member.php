@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html>
-    
     <?php
-    
-
-
     require_once('SQLite3.class.php');
 
     $FcDB = new FocarinoDB('focarino_member.sqlite3');
@@ -31,8 +27,7 @@
         (id, firstname, lastname, birthdate, city, state, joindate)
         VALUES
         (NULL, '$fName', '$lName', '$bday', '$city', '$state', '$joindate');
-
-EOF;
+    EOF;
 
 $results = $FcDB->exec($sqlInsertMember);
 

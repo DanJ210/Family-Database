@@ -1,9 +1,7 @@
 <?php 
-
 require_once('SQLite3.class.php');
 
 $db = new FocarinoDB('focarino_member.sqlite3');
-
 
 $sql =<<<EOF
     CREATE TABLE family_members
@@ -26,5 +24,4 @@ if (!$result) {
 else {
     echo "Table created successfully";
 }
-
 ?>
