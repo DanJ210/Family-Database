@@ -1,37 +1,236 @@
 /* Top header for intro */
-
 .header {
     width: 100%;
     background-color: black;
     color: white;
     font-size: 50px;
     text-align: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.5rem;
 }
 
 /* Horizontal navigation bar */
 .horizontalnav {
-    display: inline;
     background-color: cornflowerblue;
+    padding: 15px 0;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.horizontalnav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.horizontalnav li {
+    display: inline;
+}
+
+.horizontalnav a {
     color: white;
-    position: absolute;
-    top: 0px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.horizontalnav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Section management */
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
 }
 
 /* Setting fieldset and form styling and layout */
 .form {
-    width: 50%;
-    margin: auto;
+    width: 60%;
+    max-width: 600px;
+    margin: 30px auto;
     color: white;
 }
+
 .form legend {
     background-color: cornflowerblue;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
-.form fieldset{
+
+.form fieldset {
     background-color: deepskyblue;
+    border: 2px solid cornflowerblue;
+    border-radius: 10px;
+    padding: 30px;
 }
 
 /* Form styling */
-
 .textbox {
-    width:50%;
+    margin-bottom: 20px;
+}
+
+.textbox label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.textbox input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.textbox input:focus {
+    outline: none;
+    border-color: cornflowerblue;
+    box-shadow: 0 0 5px rgba(100, 149, 237, 0.5);
+}
+
+#submit {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#submit input[type="submit"], 
+#submit button {
+    background-color: cornflowerblue;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+
+#submit input[type="submit"]:hover,
+#submit button:hover {
+    background-color: #4169E1;
+}
+
+/* Members display styling */
+.members-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.member-card {
+    background-color: deepskyblue;
+    border: 2px solid cornflowerblue;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    min-width: 300px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.member-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.member-card h3 {
+    background-color: cornflowerblue;
+    margin: -20px -20px 15px -20px;
+    padding: 15px 20px;
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.member-info {
+    line-height: 1.6;
+}
+
+.member-info strong {
+    color: #E6F3FF;
+}
+
+/* Message styling */
+.message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    z-index: 1000;
+    display: none;
+    max-width: 300px;
+}
+
+.message.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .header {
+        font-size: 30px;
+        padding: 15px 10px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .form {
+        width: 90%;
+        margin: 20px auto;
+    }
+    
+    .horizontalnav ul {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .member-card {
+        min-width: 250px;
+    }
+    
+    .members-container {
+        padding: 10px;
+    }
+}
+
+/* Loading state */
+.loading {
+    text-align: center;
+    color: cornflowerblue;
+    font-size: 1.2rem;
+    padding: 40px;
 }

@@ -1,41 +1,111 @@
 <!DOCTYPE html>
-<html>
-    <title></title>
-    <head>
-        <link rel="stylesheet" href="css/layout.css" media="screen"/>
-    </head>
-    <body>
-        <div class="header">
-            <h1>Please sign into the Focarino house!</h1>
-        </div>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focarino Family Guestbook</title>
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Please sign into the Focarino house!</h1>
+    </div>
+    
+    <nav class="horizontalnav">
+        <ul>
+            <li><a href="#" onclick="showHome()">Home</a></li>
+            <li><a href="#" onclick="showMembers()">View Records</a></li>
+            <li><a href="#" onclick="showUpdate()">Fix Record</a></li>
+        </ul>
+    </nav>
+
+    <div id="home-section" class="section active">
         <div class="form">
             <fieldset>
                 <legend>The Focarino Family Database</legend> 
-                <form action="Register_Member.php" method="post">
+                <form id="registration-form">
                     <div class="textbox">
-                        First Name: <input type="text" name="firstName"/>
+                        <label>First Name: <input type="text" name="firstName" required/></label>
                     </div>
                     <div class="textbox">
-                        Last Name: <input type="text" name="lastName"/>
+                        <label>Last Name: <input type="text" name="lastName" required/></label>
                     </div>
                     <div class="textbox">
-                        BirthDate(Optional): <input type="text" name="birthDate"/>
+                        <label>BirthDate (Optional): <input type="date" name="birthDate"/></label>
                     </div>
                     <div class="textbox">
-                        City: <input type="text" name="city"/>
+                        <label>City: <input type="text" name="city" required/></label>
                     </div>
                     <div class="textbox">
-                        State: <input type="text" name="state"/>
+                        <label>State: <input type="text" name="state" required/></label>
                     </div>
                     <div id="submit">
                         <input type="submit" value="Send"/>
                     </div>
                 </form>       
-                   
             </fieldset>
-            <div id="updaterecord">
-                    <a href="update_record.php"><h3>Fix an error in a record by clicking here.</h3></a>    
-            </div>     
         </div>
-    </body>
+    </div>
+
+    <div id="members-section" class="section">
+        <div class="header">
+            The Focarino Family Database
+        </div>
+        <div id="members-list" class="members-container">
+            <!-- Members will be loaded here -->
+        </div>
+    </div>
+
+    <div id="update-section" class="section">
+        <div class="header">
+            Update Family Member Record
+        </div>
+        <div class="form">
+            <fieldset>
+                <legend>Find Record to Update</legend>
+                <form id="search-form">
+                    <div class="textbox">
+                        <label>Enter ID to update: <input type="number" name="searchId" required/></label>
+                    </div>
+                    <div id="submit">
+                        <input type="submit" value="Search"/>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
+        <div id="update-form-container" style="display: none;">
+            <div class="form">
+                <fieldset>
+                    <legend>Update Member Information</legend>
+                    <form id="update-form">
+                        <input type="hidden" name="id"/>
+                        <div class="textbox">
+                            <label>First Name: <input type="text" name="firstName" required/></label>
+                        </div>
+                        <div class="textbox">
+                            <label>Last Name: <input type="text" name="lastName" required/></label>
+                        </div>
+                        <div class="textbox">
+                            <label>BirthDate: <input type="date" name="birthDate"/></label>
+                        </div>
+                        <div class="textbox">
+                            <label>City: <input type="text" name="city" required/></label>
+                        </div>
+                        <div class="textbox">
+                            <label>State: <input type="text" name="state" required/></label>
+                        </div>
+                        <div id="submit">
+                            <input type="submit" value="Update"/>
+                            <button type="button" onclick="cancelUpdate()">Cancel</button>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <script src="js/app.js"></script>
+</body>
 </html>
