@@ -1,7 +1,8 @@
 import express from 'express';
-import Database from 'better-sqlite3';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import initSqlJs from 'sql.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,10 +16,26 @@ app.use(express.static('.'));
 
 // Initialize SQLite database
 let db;
+let SQL;
 
-function initializeDatabase() {
+async function initializeDatabase() {
     try {
-        db = new Database('focarino_member.sqlite3');
+        // Initialize sql.js
+        SQL = await initSqlJs();
+        
+        const dbPath = 'focarino_member.sqlite3';
+        let data;
+        
+        // Try to load existing database file
+        try {
+            data = fs.readFileSync(dbPath);
+        } catch (err) {
+            // If file doesn't exist, create new database
+            data = null;
+        }
+        
+        // Create database instance
+        db = new SQL.Database(data);
         
         // Create table if it doesn't exist
         const createTable = `
@@ -33,7 +50,11 @@ function initializeDatabase() {
             )
         `;
         
-        db.exec(createTable);
+        db.run(createTable);
+        
+        // Save database to file
+        saveDatabase();
+        
         console.log('Database initialized successfully');
         return true;
     } catch (error) {
@@ -42,11 +63,20 @@ function initializeDatabase() {
     }
 }
 
+function saveDatabase() {
+    try {
+        const data = db.export();
+        fs.writeFileSync('focarino_member.sqlite3', data);
+    } catch (error) {
+        console.error('Error saving database:', error);
+    }
+}
+
 // API Routes
 
 // Initialize database
-app.post('/api/init', (req, res) => {
-    const success = initializeDatabase();
+app.post('/api/init', async (req, res) => {
+    const success = await initializeDatabase();
     res.json({ success });
 });
 
@@ -54,7 +84,14 @@ app.post('/api/init', (req, res) => {
 app.get('/api/members', (req, res) => {
     try {
         const stmt = db.prepare('SELECT * FROM family_members ORDER BY joindate DESC');
-        const members = stmt.all();
+        const members = [];
+        
+        while (stmt.step()) {
+            const row = stmt.getAsObject();
+            members.push(row);
+        }
+        
+        stmt.free();
         res.json({ success: true, members });
     } catch (error) {
         console.error('Error fetching members:', error);
@@ -66,7 +103,14 @@ app.get('/api/members', (req, res) => {
 app.get('/api/members/:id', (req, res) => {
     try {
         const stmt = db.prepare('SELECT * FROM family_members WHERE id = ?');
-        const member = stmt.get(req.params.id);
+        stmt.bind([req.params.id]);
+        
+        let member = null;
+        if (stmt.step()) {
+            member = stmt.getAsObject();
+        }
+        
+        stmt.free();
         
         if (member) {
             res.json({ success: true, member });
@@ -96,11 +140,20 @@ app.post('/api/members', (req, res) => {
             VALUES (?, ?, ?, ?, ?, ?)
         `);
         
-        const result = stmt.run(firstName, lastName, birthDate, city, state, joinDate);
+        stmt.run([firstName, lastName, birthDate, city, state, joinDate]);
+        
+        // Get the last inserted row ID
+        const lastIdStmt = db.prepare('SELECT last_insert_rowid() as id');
+        lastIdStmt.step();
+        const result = lastIdStmt.getAsObject();
+        lastIdStmt.free();
+        
+        stmt.free();
+        saveDatabase();
         
         res.json({ 
             success: true, 
-            id: result.lastInsertRowid,
+            id: result.id,
             message: 'Member added successfully' 
         });
     } catch (error) {
@@ -126,9 +179,18 @@ app.put('/api/members/:id', (req, res) => {
             WHERE id = ?
         `);
         
-        const result = stmt.run(firstName, lastName, birthDate, city, state, id);
+        stmt.run([firstName, lastName, birthDate, city, state, id]);
         
-        if (result.changes > 0) {
+        // Check if any rows were affected
+        const changesStmt = db.prepare('SELECT changes() as changes');
+        changesStmt.step();
+        const changes = changesStmt.getAsObject();
+        changesStmt.free();
+        
+        stmt.free();
+        saveDatabase();
+        
+        if (changes.changes > 0) {
             res.json({ success: true, message: 'Member updated successfully' });
         } else {
             res.json({ success: false, error: 'Member not found' });
@@ -143,9 +205,18 @@ app.put('/api/members/:id', (req, res) => {
 app.delete('/api/members/:id', (req, res) => {
     try {
         const stmt = db.prepare('DELETE FROM family_members WHERE id = ?');
-        const result = stmt.run(req.params.id);
+        stmt.run([req.params.id]);
         
-        if (result.changes > 0) {
+        // Check if any rows were affected
+        const changesStmt = db.prepare('SELECT changes() as changes');
+        changesStmt.step();
+        const changes = changesStmt.getAsObject();
+        changesStmt.free();
+        
+        stmt.free();
+        saveDatabase();
+        
+        if (changes.changes > 0) {
             res.json({ success: true, message: 'Member deleted successfully' });
         } else {
             res.json({ success: false, error: 'Member not found' });
@@ -168,9 +239,9 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(port, () => {
+app.listen(port, async () => {
     console.log(`Focarino Family Guestbook running at http://localhost:${port}`);
-    initializeDatabase();
+    await initializeDatabase();
 });
 
 // Graceful shutdown
