@@ -1,8 +1,8 @@
 import express from 'express';
+import initSqlJs from 'sql.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import initSqlJs from 'sql.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,27 +14,22 @@ const port = 3000;
 app.use(express.json());
 app.use(express.static('.'));
 
-// Initialize SQLite database
-let db;
+// Database variables
 let SQL;
+let db;
+const dbPath = 'focarino_member.sqlite3';
 
 async function initializeDatabase() {
     try {
         // Initialize sql.js
         SQL = await initSqlJs();
         
-        const dbPath = 'focarino_member.sqlite3';
+        // Try to load existing database or create new one
         let data;
-        
-        // Try to load existing database file
-        try {
+        if (fs.existsSync(dbPath)) {
             data = fs.readFileSync(dbPath);
-        } catch (err) {
-            // If file doesn't exist, create new database
-            data = null;
         }
         
-        // Create database instance
         db = new SQL.Database(data);
         
         // Create table if it doesn't exist
@@ -53,7 +48,8 @@ async function initializeDatabase() {
         db.run(createTable);
         
         // Save database to file
-        saveDatabase();
+        const dbData = db.export();
+        fs.writeFileSync(dbPath, dbData);
         
         console.log('Database initialized successfully');
         return true;
@@ -66,7 +62,7 @@ async function initializeDatabase() {
 function saveDatabase() {
     try {
         const data = db.export();
-        fs.writeFileSync('focarino_member.sqlite3', data);
+        fs.writeFileSync(dbPath, data);
     } catch (error) {
         console.error('Error saving database:', error);
     }
@@ -76,13 +72,22 @@ function saveDatabase() {
 
 // Initialize database
 app.post('/api/init', async (req, res) => {
-    const success = await initializeDatabase();
-    res.json({ success });
+    try {
+        const success = await initializeDatabase();
+        res.json({ success });
+    } catch (error) {
+        console.error('Init error:', error);
+        res.json({ success: false, error: error.message });
+    }
 });
 
 // Get all members
 app.get('/api/members', (req, res) => {
     try {
+        if (!db) {
+            return res.json({ success: false, error: 'Database not initialized' });
+        }
+        
         const stmt = db.prepare('SELECT * FROM family_members ORDER BY joindate DESC');
         const members = [];
         
@@ -102,6 +107,10 @@ app.get('/api/members', (req, res) => {
 // Get member by ID
 app.get('/api/members/:id', (req, res) => {
     try {
+        if (!db) {
+            return res.json({ success: false, error: 'Database not initialized' });
+        }
+        
         const stmt = db.prepare('SELECT * FROM family_members WHERE id = ?');
         stmt.bind([req.params.id]);
         
@@ -126,6 +135,10 @@ app.get('/api/members/:id', (req, res) => {
 // Add new member
 app.post('/api/members', (req, res) => {
     try {
+        if (!db) {
+            return res.json({ success: false, error: 'Database not initialized' });
+        }
+        
         const { firstName, lastName, birthDate, city, state } = req.body;
         
         // Validate required fields
@@ -141,19 +154,12 @@ app.post('/api/members', (req, res) => {
         `);
         
         stmt.run([firstName, lastName, birthDate, city, state, joinDate]);
-        
-        // Get the last inserted row ID
-        const lastIdStmt = db.prepare('SELECT last_insert_rowid() as id');
-        lastIdStmt.step();
-        const result = lastIdStmt.getAsObject();
-        lastIdStmt.free();
-        
         stmt.free();
+        
         saveDatabase();
         
         res.json({ 
             success: true, 
-            id: result.id,
             message: 'Member added successfully' 
         });
     } catch (error) {
@@ -165,6 +171,10 @@ app.post('/api/members', (req, res) => {
 // Update member
 app.put('/api/members/:id', (req, res) => {
     try {
+        if (!db) {
+            return res.json({ success: false, error: 'Database not initialized' });
+        }
+        
         const { firstName, lastName, birthDate, city, state } = req.body;
         const id = req.params.id;
         
@@ -180,17 +190,11 @@ app.put('/api/members/:id', (req, res) => {
         `);
         
         stmt.run([firstName, lastName, birthDate, city, state, id]);
-        
-        // Check if any rows were affected
-        const changesStmt = db.prepare('SELECT changes() as changes');
-        changesStmt.step();
-        const changes = changesStmt.getAsObject();
-        changesStmt.free();
-        
+        const changes = db.getRowsModified();
         stmt.free();
-        saveDatabase();
         
-        if (changes.changes > 0) {
+        if (changes > 0) {
+            saveDatabase();
             res.json({ success: true, message: 'Member updated successfully' });
         } else {
             res.json({ success: false, error: 'Member not found' });
@@ -204,19 +208,17 @@ app.put('/api/members/:id', (req, res) => {
 // Delete member (optional - not in original but useful)
 app.delete('/api/members/:id', (req, res) => {
     try {
+        if (!db) {
+            return res.json({ success: false, error: 'Database not initialized' });
+        }
+        
         const stmt = db.prepare('DELETE FROM family_members WHERE id = ?');
         stmt.run([req.params.id]);
-        
-        // Check if any rows were affected
-        const changesStmt = db.prepare('SELECT changes() as changes');
-        changesStmt.step();
-        const changes = changesStmt.getAsObject();
-        changesStmt.free();
-        
+        const changes = db.getRowsModified();
         stmt.free();
-        saveDatabase();
         
-        if (changes.changes > 0) {
+        if (changes > 0) {
+            saveDatabase();
             res.json({ success: true, message: 'Member deleted successfully' });
         } else {
             res.json({ success: false, error: 'Member not found' });
@@ -246,8 +248,5 @@ app.listen(port, async () => {
 
 // Graceful shutdown
 process.on('SIGINT', () => {
-    if (db) {
-        db.close();
-    }
     process.exit(0);
 });
