@@ -17,7 +17,7 @@ app.use(express.static('.'));
 // Database variables
 let SQL;
 let db;
-const dbPath = 'focarino_member.sqlite3';
+const dbPath = path.join(__dirname, 'focarino_member.sqlite3');
 
 async function initializeDatabase() {
     try {
