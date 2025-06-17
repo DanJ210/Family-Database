@@ -1,6 +1,9 @@
 // Application state
 let currentSection = 'home';
 
+// API base URL - point to the Express server
+const API_BASE_URL = 'http://localhost:3000';
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
@@ -9,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializeApp() {
     // Initialize database and load members
-    fetch('/api/init', { method: 'POST' })
+    fetch(`${API_BASE_URL}/api/init`, { method: 'POST' })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -77,7 +80,7 @@ async function handleRegistration(event) {
     };
 
     try {
-        const response = await fetch('/api/members', {
+        const response = await fetch(`${API_BASE_URL}/api/members`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -104,7 +107,7 @@ async function loadMembers() {
     membersContainer.innerHTML = '<div class="loading">Loading family members...</div>';
 
     try {
-        const response = await fetch('/api/members');
+        const response = await fetch(`${API_BASE_URL}/api/members`);
         const result = await response.json();
         
         if (result.success) {
@@ -151,7 +154,7 @@ async function handleSearch(event) {
     const searchId = formData.get('searchId');
 
     try {
-        const response = await fetch(`/api/members/${searchId}`);
+        const response = await fetch(`${API_BASE_URL}/api/members/${searchId}`);
         const result = await response.json();
         
         if (result.success && result.member) {
@@ -191,7 +194,7 @@ async function handleUpdate(event) {
     };
 
     try {
-        const response = await fetch(`/api/members/${memberData.id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/members/${memberData.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
